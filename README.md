@@ -109,5 +109,5 @@ Reach me on [LinkedIn](https://www.linkedin.com/in/gael-penessot/) :)
 
 ### Acknowledgements
 
-    Special thanks to ENI Editions for publishing the book.
-    Thanks to the Python community for providing the tools and libraries used in this book.
+> Special thanks to ENI Editions for publishing the book.
+> Thanks to the Python community for providing the tools and libraries used in this book.
