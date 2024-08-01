@@ -74,6 +74,7 @@ Open the notebook file (.ipynb) you want to explore and run the cells to follow 
 
 If you use this code in your work, please cite the book and this repository as follows:
 
+```
 @book{Author2024,
   title     = {Business Intelligence with Python},
   author    = {Gaël Penessot},
@@ -88,6 +89,7 @@ If you use this code in your work, please cite the book and this repository as f
   year      = {2024},
   howpublished = {\url{https://github.com/yourusername/business-intelligence-with-python}},
 }
+```
 
 ### Contributing
 
