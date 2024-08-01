@@ -45,8 +45,8 @@ Each chapter in the book has a corresponding directory in this repository contai
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/business-intelligence-with-python.git
-    cd business-intelligence-with-python
+    git clone https://github.com/yourusername/Business_intelligence_with_Python.git
+    cd Business_intelligence_with_Python
     ```
 
 2. Create a virtual environment:
