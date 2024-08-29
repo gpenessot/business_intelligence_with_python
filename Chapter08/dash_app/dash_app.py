@@ -1,5 +1,5 @@
 import dash
-from dash import dcc, html, Input, Output, State
+from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
 import geopandas as gpd
@@ -10,14 +10,14 @@ from typing import Tuple
 import base64
 
 # Constants
-LOGO_PATH = "./img/logo.png"
+LOGO_PATH = "../app_img/logo.png"
 APP_VERSION = "v1.0.0"
 DATA_PATHS = {
-    'orders': './data/olist_orders_dataset.csv',
-    'customers': './data/olist_customers_dataset.csv',
-    'order_items': './data/olist_order_items_dataset.csv',
-    'products': './data/olist_products_dataset.csv',
-    'geojson': './data/brazil-states.geojson'
+    'orders': '../data/olist_orders_dataset.csv',
+    'customers': '../data/olist_customers_dataset.csv',
+    'order_items': '../data/olist_order_items_dataset.csv',
+    'products': '../data/olist_products_dataset.csv',
+    'geojson': '../data/brazil-states.geojson'
 }
 
 # Initialize the Dash app
@@ -75,33 +75,42 @@ logo_base64 = get_base64_encoded_image(LOGO_PATH)
 # Layout
 app.layout = dbc.Container([
     dbc.Row([
-        dbc.Col(html.H1("My very first dashboard with Dash", className="text-center mb-4"), width=12)
-    ]),
-    dbc.Row([
+        # Sidebar
         dbc.Col([
-            html.Img(src=f"data:image/png;base64,{logo_base64}", style={"width": "100%"}),
-            html.H3("Filters"),
+            html.Br(),
+            html.Div(
+                html.Img(src=f"data:image/png;base64,{logo_base64}", style={"width": "70%"}),
+                style={'text-align':'center'}
+            ),
+            html.Br(),
+            html.H5("Filters"),
+            html.Br(),
+            html.P('Select Order Year'),
             dcc.Dropdown(
                 id='year-dropdown',
                 options=[{'label': str(year), 'value': year} for year in sorted(gdf['order_year'].unique())],
                 value=gdf['order_year'].min()
             ),
+            html.Br(),
+            html.P('Select a State'),
             dcc.Dropdown(
                 id='state-dropdown',
                 options=[{'label': state, 'value': state} for state in sorted(gdf['customer_state'].unique())],
                 value=gdf['customer_state'].iloc[0]
             ),
-            html.Hr(),
-            html.P(f"Last dashboard update: {last_update_date}"),
-            html.P(f"Data freshness date: {data_freshness_date}"),
-            html.P(f"Application version: {APP_VERSION}"),
-            html.P("Contact: email@company.com")
-        ], width=3),
+        ], width=2, className="vh-100", style={'backgroundColor':"#F0F2F6"}),
+        
+        # Main content
         dbc.Col([
             dbc.Row([
-                dbc.Col(dbc.Card(id="total-price-card", body=True), width=4),
-                dbc.Col(dbc.Card(id="unique-customers-card", body=True), width=4),
-                dbc.Col(dbc.Card(id="another-metric-card", body=True), width=4),
+                dbc.Col(
+                    html.B(
+                        html.H1("My very first dashboard with Dash", className="text-center mb-4")), width=12)
+            ]),
+            dbc.Row([
+                dbc.Col(dbc.Card(id="total-revenue-card", body=True), width=4),
+                dbc.Col(dbc.Card(id="average-order-value-card", body=True), width=4),
+                dbc.Col(dbc.Card(id="number-of-customers-card", body=True), width=4),
             ], className="mb-4"),
             dbc.Row([
                 dbc.Col(dcc.Graph(id="choropleth-map"), width=6),
@@ -112,14 +121,18 @@ app.layout = dbc.Container([
                 dbc.Col(dcc.Graph(id="bar-chart-products"), width=4),
                 dbc.Col(dcc.Graph(id="pie-chart-cities"), width=4),
             ]),
-        ], width=9)
-    ])
-], fluid=True)
+            dbc.Row([
+                dbc.Col(html.Footer(f"Last dashboard update: {last_update_date} | Data freshness date: {data_freshness_date} | Application version: {APP_VERSION} | Contact: email@company.com"), style={'text-align':'center'}, width=12)
+            ]),
+        ], width=10)
+    ]),
+], fluid=True, className="vh-100")
 
+# Update the callback
 @app.callback(
-    [Output("total-price-card", "children"),
-     Output("unique-customers-card", "children"),
-     Output("another-metric-card", "children"),
+    [Output("total-revenue-card", "children"),
+     Output("average-order-value-card", "children"),
+     Output("number-of-customers-card", "children"),
      Output("choropleth-map", "figure"),
      Output("line-chart", "figure"),
      Output("bar-chart-states", "figure"),
@@ -130,17 +143,28 @@ app.layout = dbc.Container([
 )
 def update_charts(selected_year, selected_state):
     filtered_gdf = gdf[gdf['order_year'] == selected_year]
-    daily_sales = df[df['order_year'] == selected_year].groupby('order_date')['price'].sum().reset_index()
-    sales_by_city = df[(df['order_year'] == selected_year) & (df['customer_state'] == selected_state)].groupby('customer_city')['price'].sum().reset_index()
-    best_products = df[df['order_year'] == selected_year].groupby('product_category_name')['price'].sum().reset_index()
+    filtered_df = df[df['order_year'] == selected_year]
+    daily_sales = filtered_df.groupby('order_date')['price'].sum().reset_index()
+    sales_by_city = filtered_df[filtered_df['customer_state'] == selected_state].groupby('customer_city')['price'].sum().reset_index()
+    best_products = filtered_df.groupby('product_category_name')['price'].sum().reset_index()
 
     total_price = filtered_gdf['price'].sum()
+    average_price = filtered_gdf['price'].mean()
     unique_customers = filtered_gdf['customer_unique_id'].nunique()
 
-    # Metrics
-    total_price_card = [html.H4("Total Price"), html.H2(f"${total_price:,.2f}")]
-    unique_customers_card = [html.H4("Unique Customers"), html.H2(f"{unique_customers:,}")]
-    another_metric_card = [html.H4("Another Metric"), html.H2(f"{unique_customers:,}")]  # Placeholder
+    # KPI Cards
+    total_revenue_card = [
+        html.H4("Total Revenue"),
+        html.H2(f"${total_price:,.2f}")
+    ]
+    average_order_value_card = [
+        html.H4("Average Order Value (AOV)"),
+        html.H2(f"${average_price:,.2f}")
+    ]
+    number_of_customers_card = [
+        html.H4("Number of Customers"),
+        html.H2(f"{unique_customers:,}")
+    ]
 
     # Choropleth map
     fig1 = px.choropleth(
@@ -164,7 +188,8 @@ def update_charts(selected_year, selected_state):
         y='price', 
         color_discrete_sequence=px.colors.sequential.Plasma,
         title='Sum of prices by day',
-        labels={'order_date': 'Date', 'price': 'Sum of prices'}
+        labels={'order_date': 'Date', 'price': 'Sum of prices'},
+        template='plotly_white'
     )
     average_sales = daily_sales['price'].mean()
     fig2.add_hline(
@@ -183,7 +208,8 @@ def update_charts(selected_year, selected_state):
         orientation='h',
         color='customer_state',
         color_discrete_sequence=px.colors.sequential.Plasma,
-        title="Top 5 States by Sales"
+        title="Top 5 States by Sales",
+        template='plotly_white'
     )
 
     fig4 = px.bar(
@@ -193,7 +219,8 @@ def update_charts(selected_year, selected_state):
         orientation='h',
         color='product_category_name',
         color_discrete_sequence=px.colors.sequential.Plasma,
-        title="Top 5 Product Categories"
+        title="Top 5 Product Categories",
+        template='plotly_white'
     )
 
     # Pie chart
@@ -207,7 +234,8 @@ def update_charts(selected_year, selected_state):
         title=f"Top 5 Cities in {selected_state}"
     )
 
-    return total_price_card, unique_customers_card, another_metric_card, fig1, fig2, fig3, fig4, fig5
+    return total_revenue_card, average_order_value_card, number_of_customers_card, fig1, fig2, fig3, fig4, fig5
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)

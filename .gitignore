@@ -166,5 +166,6 @@ Chapter0*/img/
 
 # Folder structure initialization 
 initiate.sh
-
-
+/streamlit_app/.ruff_cache
+/taipy_app/.ruff_cache
+/taipy_app/.taipy

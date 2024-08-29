@@ -12,14 +12,14 @@ from streamlit_extras.grid import grid
 from streamlit_extras.add_vertical_space import add_vertical_space
 
 # Constants
-LOGO_PATH = "./img/logo.png"
+LOGO_PATH = "../app_img/logo.png"
 APP_VERSION = "v1.0.0"
 DATA_PATHS = {
-    "orders": "./data/olist_orders_dataset.csv",
-    "customers": "./data/olist_customers_dataset.csv",
-    "order_items": "./data/olist_order_items_dataset.csv",
-    "products": "./data/olist_products_dataset.csv",
-    "geojson": "./data/brazil-states.geojson",
+    "orders": "../data/olist_orders_dataset.csv",
+    "customers": "../data/olist_customers_dataset.csv",
+    "order_items": "../data/olist_order_items_dataset.csv",
+    "products": "../data/olist_products_dataset.csv",
+    "geojson": "../data/brazil-states.geojson",
 }
 
 # Set page configuration
