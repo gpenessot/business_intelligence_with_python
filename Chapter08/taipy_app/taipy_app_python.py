@@ -99,6 +99,11 @@ def initialize(data, geodata, selected_year="2018", selected_state="AC"):
     filtered_gdf = geodata[geodata["order_year"] == int(selected_year)]
     filtered_df = data[data["order_year"] == int(selected_year)]
     daily_sales = filtered_df.groupby("order_date")["price"].sum().reset_index()
+    sales_by_city, best_products = filter_by_city(filtered_df, selected_state)
+    return filtered_df, filtered_gdf, daily_sales, sales_by_city, best_products
+
+
+def filter_by_city(filtered_df, selected_state="AC"):
     sales_by_city = (
         filtered_df[filtered_df["customer_state"] == selected_state]
         .groupby("customer_city")["price"]
@@ -109,7 +114,7 @@ def initialize(data, geodata, selected_year="2018", selected_state="AC"):
         filtered_df.groupby("product_category_name")["price"].sum().reset_index()
     )
 
-    return filtered_df, filtered_gdf, daily_sales, sales_by_city, best_products
+    return sales_by_city, best_products
 
 
 # Initialization
@@ -241,7 +246,7 @@ def create_pie_chart(data: pd.DataFrame) -> px.pie:
     )
 
 
-def change_selection(state):
+def change_year(state):
     """
     Update the dashboard state when user selections change.
 
@@ -257,6 +262,19 @@ def change_selection(state):
     ) = initialize(df, gdf, state.selected_year, state.selected_state)
 
 
+def change_state(state):
+    """
+    Update the dashboard state when user selections change.
+
+    Args:
+        state: The current state of the Taipy application.
+    """
+    (
+        state.sales_by_city,
+        state.best_products,
+    ) = filter_by_city(state.filtered_df, state.selected_state)
+
+
 with tgb.Page() as page:
     tgb.toggle(theme=True)
 
@@ -268,7 +286,7 @@ with tgb.Page() as page:
                 "{selected_year}",
                 lov=sorted(gdf["order_year"].astype("str").unique()),
                 dropdown=True,
-                on_change=change_selection,
+                on_change=change_year,
                 label="Year",
             )
 
@@ -277,7 +295,7 @@ with tgb.Page() as page:
                 "{selected_state}",
                 lov=sorted(gdf["customer_state"].unique()),
                 dropdown=True,
-                on_change=change_selection,
+                on_change=change_state,
                 label="State",
             )
 
