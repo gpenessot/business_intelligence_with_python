@@ -365,5 +365,4 @@ with tgb.Page() as page:
 
 if __name__ == "__main__":
     page = Gui(page)
-    # tp.Core().run() # You do not use Taipy Core here to manage data, pipelines, caching, user management, etc
     page.run(title="New Taipy Dashboard", dark_mode=False, margin="0px")
