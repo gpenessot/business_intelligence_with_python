@@ -1,6 +1,6 @@
 # luigi_olist_etl_dag.py
 import luigi
-from etl_functions import extract, transform, load_to_database
+from Chapter06.ch06_etl_functions import extract, transform, load_to_database
 import os
 import datetime
 

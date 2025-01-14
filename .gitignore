@@ -169,3 +169,7 @@ initiate.sh
 /streamlit_app/.ruff_cache
 /taipy_app/.ruff_cache
 /taipy_app/.taipy
+Chapter01/get_data_from_ranking.ipynb
+Chapter06/.gitattributes
+Chapter04/marketing-ab-testing.ipynb
+Chapter01/get_data_from_ranking.ipynb

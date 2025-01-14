@@ -1,0 +1,181 @@
+<html>
+    <head>
+<style>
+.graph-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: white;
+}
+.title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #333;
+}
+.subtitle {
+    text-align: center;
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 30px;
+    font-weight: normal;
+}
+div.vis-navigation {
+    display: none !important;
+}
+div.vis-network {
+    background-color: white !important;
+}
+#mynetwork {
+    background-color: white !important;
+}
+</style>
+<div class="graph-container">
+    <div class="title">Visualization Libraries Ecosystem</div>
+    <div class="subtitle">Relationships and Dependencies between Major Python and JavaScript Visualization Libraries</div>
+</div>
+
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "javascript", "label": "javascript", "mass": 3, "shape": "dot", "size": 37.85714285714286, "title": "Group: 0\nDegree: 10"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "cufflinks", "label": "cufflinks", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "plotly", "label": "plotly", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(198, 198, 198)", "font": {"color": "#000000"}, "id": "bokeh", "label": "bokeh", "mass": 3, "shape": "dot", "size": 27.142857142857142, "title": "Group: 2\nDegree: 4"}, {"color": "rgb(198, 198, 198)", "font": {"color": "#000000"}, "id": "bqplot", "label": "bqplot", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 2\nDegree: 2"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "ipyvolume", "label": "ipyvolume", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "Lighting", "label": "Lighting", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "ipyleaflet", "label": "ipyleaflet", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "pythreejs", "label": "pythreejs", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(180, 180, 180)", "font": {"color": "#000000"}, "id": "toyplot", "label": "toyplot", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 0\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "OpenGL", "label": "OpenGL", "mass": 3, "shape": "dot", "size": 32.5, "title": "Group: 3\nDegree: 7"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "pyglet", "label": "pyglet", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "vispy", "label": "vispy", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "glumpy", "label": "glumpy", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "visvis", "label": "visvis", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "GR Framework", "label": "GR Framework", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "mayavi", "label": "mayavi", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(208, 208, 208)", "font": {"color": "#000000"}, "id": "galry", "label": "galry", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 3\nDegree: 1"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "d3js", "label": "d3js", "mass": 3, "shape": "dot", "size": 28.92857142857143, "title": "Group: 5\nDegree: 5"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "d3po", "label": "d3po", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 5\nDegree: 1"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "vincent", "label": "vincent", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 5\nDegree: 1"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "vega", "label": "vega", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 5\nDegree: 2"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "vega-lite", "label": "vega-lite", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 5\nDegree: 2"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "altair", "label": "altair", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 5\nDegree: 1"}, {"color": "rgb(226, 226, 226)", "font": {"color": "#000000"}, "id": "mpld3", "label": "mpld3", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 5\nDegree: 2"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "Matplotlib", "label": "Matplotlib", "mass": 3, "shape": "dot", "size": 45.0, "title": "Group: 6\nDegree: 14"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "YT", "label": "YT", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "cartopy", "label": "cartopy", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "basemap", "label": "basemap", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(245, 245, 245)", "font": {"color": "#000000"}, "id": "networkx", "label": "networkx", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 7\nDegree: 2"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "yellowbrick", "label": "yellowbrick", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "scikit-plot", "label": "scikit-plot", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "plotnine", "label": "plotnine", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "seaborn", "label": "seaborn", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "pandas", "label": "pandas", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "glueviz", "label": "glueviz", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(236, 236, 236)", "font": {"color": "#000000"}, "id": "ggpy", "label": "ggpy", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 6\nDegree: 1"}, {"color": "rgb(198, 198, 198)", "font": {"color": "#000000"}, "id": "holoviews", "label": "holoviews", "mass": 3, "shape": "dot", "size": 25.357142857142858, "title": "Group: 2\nDegree: 3"}, {"color": "rgb(198, 198, 198)", "font": {"color": "#000000"}, "id": "datashader", "label": "datashader", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 2\nDegree: 2"}, {"color": "rgb(198, 198, 198)", "font": {"color": "#000000"}, "id": "Vaex", "label": "Vaex", "mass": 3, "shape": "dot", "size": 25.357142857142858, "title": "Group: 2\nDegree: 3"}, {"color": "rgb(245, 245, 245)", "font": {"color": "#000000"}, "id": "graph-tool", "label": "graph-tool", "mass": 1, "shape": "dot", "size": 16.785714285714285, "title": "Group: 7\nDegree: 1"}, {"color": "rgb(245, 245, 245)", "font": {"color": "#000000"}, "id": "graphviz", "label": "graphviz", "mass": 1, "shape": "dot", "size": 18.571428571428573, "title": "Group: 7\nDegree: 2"}, {"color": "rgb(255, 255, 255)", "font": {"color": "#000000"}, "id": "pygal", "label": "pygal", "mass": 1, "shape": "dot", "size": 15.0, "title": "Group: 8\nDegree: 0"}, {"color": "rgb(189, 189, 189)", "font": {"color": "#000000"}, "id": "chaco", "label": "chaco", "mass": 1, "shape": "dot", "size": 15.0, "title": "Group: 1\nDegree: 0"}, {"color": "rgb(217, 217, 217)", "font": {"color": "#000000"}, "id": "PyQTGraph", "label": "PyQTGraph", "mass": 1, "shape": "dot", "size": 15.0, "title": "Group: 4\nDegree: 0"}]);
+                  edges = new vis.DataSet([{"from": "javascript", "to": "cufflinks", "width": 2}, {"from": "javascript", "to": "plotly", "width": 2}, {"from": "javascript", "to": "bokeh", "width": 2}, {"from": "javascript", "to": "bqplot", "width": 2}, {"from": "javascript", "to": "ipyvolume", "width": 2}, {"from": "javascript", "to": "Lighting", "width": 2}, {"from": "javascript", "to": "ipyleaflet", "width": 2}, {"from": "javascript", "to": "pythreejs", "width": 2}, {"from": "javascript", "to": "toyplot", "width": 2}, {"from": "javascript", "to": "d3js", "width": 2}, {"from": "bokeh", "to": "holoviews", "width": 0.5}, {"from": "bokeh", "to": "datashader", "width": 0.5}, {"from": "bokeh", "to": "Vaex", "width": 0.5}, {"from": "bqplot", "to": "Vaex", "width": 0.5}, {"from": "OpenGL", "to": "pyglet", "width": 2}, {"from": "OpenGL", "to": "vispy", "width": 2}, {"from": "OpenGL", "to": "glumpy", "width": 2}, {"from": "OpenGL", "to": "visvis", "width": 2}, {"from": "OpenGL", "to": "GR Framework", "width": 2}, {"from": "OpenGL", "to": "mayavi", "width": 2}, {"from": "OpenGL", "to": "galry", "width": 2}, {"from": "d3js", "to": "d3po", "width": 2}, {"from": "d3js", "to": "vincent", "width": 2}, {"from": "d3js", "to": "vega", "width": 2}, {"from": "d3js", "to": "mpld3", "width": 2}, {"from": "vega", "to": "vega-lite", "width": 0.5}, {"from": "vega-lite", "to": "altair", "width": 0.5}, {"from": "mpld3", "to": "Matplotlib", "width": 2}, {"from": "Matplotlib", "to": "YT", "width": 2}, {"from": "Matplotlib", "to": "cartopy", "width": 2}, {"from": "Matplotlib", "to": "basemap", "width": 2}, {"from": "Matplotlib", "to": "networkx", "width": 2}, {"from": "Matplotlib", "to": "yellowbrick", "width": 2}, {"from": "Matplotlib", "to": "scikit-plot", "width": 2}, {"from": "Matplotlib", "to": "plotnine", "width": 2}, {"from": "Matplotlib", "to": "seaborn", "width": 2}, {"from": "Matplotlib", "to": "pandas", "width": 2}, {"from": "Matplotlib", "to": "glueviz", "width": 2}, {"from": "Matplotlib", "to": "ggpy", "width": 2}, {"from": "Matplotlib", "to": "holoviews", "width": 2}, {"from": "Matplotlib", "to": "Vaex", "width": 2}, {"from": "networkx", "to": "graphviz", "width": 0.5}, {"from": "holoviews", "to": "datashader", "width": 0.5}, {"from": "graph-tool", "to": "graphviz", "width": 0.5}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"forceAtlas2Based": {"gravitationalConstant": -2000, "centralGravity": 0.1, "springLength": 200, "springConstant": 0.05, "damping": 0.95, "avoidOverlap": 1.0}, "maxVelocity": 150, "minVelocity": 0.75, "solver": "forceAtlas2Based", "stabilization": {"enabled": true, "iterations": 1000, "updateInterval": 25, "fit": true}, "timestep": 0.5, "adaptiveTimestep": true}, "nodes": {"font": {"size": 72, "face": "arial"}, "scaling": {"min": 15, "max": 45}}, "edges": {"color": {"color": "#666666", "highlight": "#000000"}, "smooth": {"enabled": true, "type": "continuous", "roundness": 0.5}}, "interaction": {"dragNodes": true, "dragView": true, "zoomView": true, "navigationButtons": false}, "manipulation": {"enabled": false}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        network.setOptions({
+            physics: {
+                stabilization: {
+                    enabled: true,
+                    iterations: 100,
+                    updateInterval: 10
+                }
+            }
+        });
+        network.stabilize(100);
+        setTimeout(function() {
+            network.setOptions({ physics: { enabled: false } });
+        }, 100);
+    }, 3000);
+});
+</script>
+</body>
+</html>

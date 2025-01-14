@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from etl_functions import extract, transform, load_to_database
+from Chapter06.ch06_etl_functions import extract, transform, load_to_database
 
 default_args = {
     'owner': 'airflow',
