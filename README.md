@@ -1,7 +1,7 @@
 # Companion Repo for _Business Intelligence with Python_ by ENI Editions
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b2e5b847-7ffa-469e-a9aa-ef84ce00fa62" width="50%">
+  <img src="https://github.com/user-attachments/assets/b2e5b847-7ffa-469e-a9aa-ef84ce00fa62" width="33%">
 </p>
 
 
