@@ -1,6 +1,6 @@
 # Companion Repo for "Business Intelligence with Python" by ENI Editions
 
-Welcome to the companion repository for the book **"Business Intelligence with Python"** published by ENI Editions. This repository contains the code examples and Jupyter notebooks referenced in the book.
+Welcome to the companion repository for the book **[Business Intelligence with Python](https://amzn.to/40fyaE9)** published by ENI Editions. This repository contains the code examples and Jupyter notebooks referenced in the book.
 
 ## Table of Contents
 
